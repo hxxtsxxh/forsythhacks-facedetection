@@ -28,7 +28,6 @@ root.configure(bg=screen_bg_color)
 def webcam_detection():
     # Load some pre-trained data on face frontals from opencv (haar cascade algorithm)
     trained_face_data = cv2.CascadeClassifier(path_to_data)
-    #trained_smile_data =cv2.CascadeClassifier(path_to_smile)
 
     # to capture face from webcam
     webcam = cv2.VideoCapture(0, cv2.CAP_DSHOW)
@@ -41,23 +40,16 @@ def webcam_detection():
 
         # Must convert this image to greyscale
         grey_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
         # detect faces in vid
-        face_coordinates = trained_face_data.detectMultiScale(grey_img,1.3,5)
+        face_coordinates = trained_face_data.detectMultiScale(grey_img)
 
         d = 0
 
-        # draw rectangles around the faces with video
+        # draw rectangles around the faces
         for (x, y, w, h) in face_coordinates:
-            #cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 6)
-            if (h >=100):
-                cv2.circle(frame,(x+math.floor(w/2),y+math.floor(h/2)), math.floor(h/2), (20, 20, 255), 6)
-                #Scrapped Smile Part
-                #smile_coordinates= trained_smile_data.detectMultiScale(grey_img,1.2,10)
-                #for (sx, sy, sw, sh) in smile_coordinates:
-                    #if(sh>=100):
-                       #cv2.rectangle(frame, (sx, sy), ((sx + sw), (sy + sh)), (0, 0, 255), 2)
-                        #cv2.circle(frame,(sx+math.floor(sw/2),sy+math.floor(sh/2)), math.floor(sh/2), (20, 20, 20), 2)
-        d += 1
+            cv2.rectangle(frame, (x, y), (x + w, y + h), (0, 0, 255), 6)
+            d += 1
 
         if d < 1:
             Label(root, text=' No faces detected ', font='helvetica 40', bg='#ACD7EC', fg='red', padx=2).place(
@@ -106,11 +98,9 @@ def img_detection():
     # draw rectangles around the faces
     # 'f' variable is for number of faces
     f = 0
-    #for single FRames
     for (x, y, w, h) in face_coordinates:
-        #cv2.rectangle(img, (x, y), (x + w, y + h), (random.randint(180, 255), random.randint(180, 255),random.randint(180, 255)), 6)
-        cv2.circle(img,(x+math.floor(w/2),y+math.floor(h/2)),math.floor(h/2), (random.randint(180, 255), random.randint(180, 255),random.randint(180, 255)), 6)
-
+        cv2.rectangle(img, (x, y), (x + w, y + h), (random.randint(180, 255), random.randint(180, 255),
+                                                    random.randint(180, 255)), 6)
         # for each face detected, f is incremented by 1
         f += 1
 
